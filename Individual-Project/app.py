@@ -22,7 +22,7 @@ db = firebase.database()
 
 app  = Flask(__name__)
 
-app.config['SECRET_KEY'] = 'passcode'    
+app.config['SECRET_KEY'] = 'passcode'
 #Code goes below here
 
 @app.route('/', methods=['GET', 'POST'])
