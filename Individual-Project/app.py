@@ -36,6 +36,11 @@ def signup():
 
 @app.route('/home', methods=['GET', 'POST'])
 def home():
+	if request.method() == 'POST':
+		topic = request.form['topic']
+		db.child("topics").push(topic)
+		topics = db.child("topics").get().val()
+		return render_template('home.html', topics=topics)
 	return render_template('home.html')
 
 @app.route('/signin', methods=['GET', 'POST'])

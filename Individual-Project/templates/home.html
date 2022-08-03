@@ -4,6 +4,11 @@
 	<title></title>
 </head>
 <body>
-
+	<form action='/home', method='POST'>
+		<h4>Type a Topic</h4>
+		<input type="text" name="Topic" placeholder="Input a Topic Max Length 100 Characters" maxlength='100'>
+		<input type="submit" name="">
+	</form>
+	<h1>{{ topics }}</h1>
 </body>
 </html>
