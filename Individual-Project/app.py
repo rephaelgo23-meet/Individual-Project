@@ -30,29 +30,55 @@ def signup():
 	if request.method == 'POST':
 		password = request.form['password']
 		email = request.form['email']
-		login_session['user'] = auth.create_user_with_email_and_password(email, password)
+		try:
+			login_session['user'] = auth.create_user_with_email_and_password(email, password)
+		except:
+			return render_template('signup.html')
 		return redirect(url_for('home'))
 	return render_template('signup.html')
 
 @app.route('/home', methods=['GET', 'POST'])
 def home():
-	if request.method() == 'POST':
+	flag = True
+	if request.method == 'POST':
 		topic = request.form['topic']
-		db.child("topics").push(topic)
-		topics = db.child("topics").get().val()
+		topics =  db.child("topics").get().val()
+		if topics is None:
+			pass
+		else:
+			for i in topics:
+				if topic == topics[i]:
+					flag = False
+		if flag:
+			db.child("topics").child(topic).set("")
+			topics = db.child("topics").get().val()
 		return render_template('home.html', topics=topics)
-	return render_template('home.html')
+	topics = db.child("topics").get().val()
+	if topics is None:
+		topics = {}
+	return render_template('home.html', topics=topics)
 
 @app.route('/signin', methods=['GET', 'POST'])
 def signin():
 	if request.method == 'POST':
 		password = request.form['password']
 		email = request.form['email']
-		login_session['user'] = auth.sign_in_with_email_and_password(email, password)
+		try:
+			login_session['user'] = auth.sign_in_with_email_and_password(email, password)
+		except:
+			return render_template('signin.html')		
 		return redirect(url_for('home'))
 	return render_template('signin.html')
 
-
+@app.route('/topics/<string:topic>', methods=['GET', 'POST'])
+def topic(topic):
+	if request.method == 'POST':
+		thought = request.form['thought']
+		db.child("topics").child(topic).push(thought)
+		thoughts = db.child("topics").child(topic).get().val()
+		return render_template('topic.html', topic=topic, thoughts=thoughts)
+	thoughts = db.child("topics").child(topic).get().val()
+	return render_template('topic.html', topic=topic, thoughts=thoughts)
 
 #Code goes above here
 

@@ -1,0 +1,25 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+
+	<title>{{ topic }}</title>
+</head>
+<body>
+	<div style="text-align: center;">
+	<form action="/topics/{{ topic }}", method='POST'>
+		Add Thought
+		<br>
+		<input type="text" name="thought" placeholder="Add Thought Max Length 100 Characters" maxlength="100" size="40">
+		<br>
+		<input type="submit" name="submit">		
+	</form>
+	<div style="display: inline;">
+
+	{% for thought in thoughts %}
+	<p style="float: left; font-size: 20px; margin: 1%;" id="thought" >{{ thoughts[thought] }}</p>
+	{% endfor %}
+	</div>
+
+</body>
+</html>
